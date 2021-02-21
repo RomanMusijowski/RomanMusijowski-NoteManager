@@ -10,6 +10,8 @@ public class NoteSnapshotDTO {
 
     private Long id;
 
+    private String title;
+
     private String content;
 
     private Long version;

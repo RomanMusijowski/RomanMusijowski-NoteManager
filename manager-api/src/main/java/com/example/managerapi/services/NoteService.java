@@ -10,9 +10,9 @@ public interface NoteService {
 
     Note findById(Long id);
 
-    void create(String content);
+    void create(String title, String content);
 
-    Note update(Long id, String content);
+    Note update(Long id, String title, String content);
 
     void deleteById(Long id);
 }

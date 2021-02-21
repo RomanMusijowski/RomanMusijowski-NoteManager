@@ -9,7 +9,8 @@ POST http://localhost:8080/api/note
 Content-Type: application/json
 
 {
-  "content": "just note value"
+  "title": "just note title22",
+  "content": "just note content"
 }
 
 ###
@@ -17,7 +18,8 @@ PUT http://localhost:8080/api/note/20
 Content-Type: application/json
 
 {
-  "content": "just note update3333"
+  "title": "just note title update3",
+  "content": "just note content update33"
 }
 
 ###

@@ -4,7 +4,6 @@ package com.example.managerapi.handler;
 
 
 import com.example.managerapi.exceptions.ResourceExistException;
-import javax.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.mapping.PropertyReferenceException;
@@ -46,7 +45,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-    @ExceptionHandler({ResourceExistException.class})
+    @ExceptionHandler(ResourceExistException.class)
     public ResponseEntity<Object> handleExistException(Exception ex, WebRequest request) {
         ErrorDetails error = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
@@ -94,20 +93,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex, WebRequest request) {
+    @ExceptionHandler(javax.validation.ConstraintViolationException.class)
+    public ResponseEntity<Object> handleConstraintViolationExceptionJavax(javax.validation.ConstraintViolationException ex, WebRequest request) {
         ErrorDetails error = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-    @ExceptionHandler(MissingServletRequestPartException.class)
-    public ResponseEntity<Object> handleMissingServletRequestPartException(MissingServletRequestPartException ex, WebRequest request) {
-        ErrorDetails error = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-    }
-
-    @ExceptionHandler(ServletException.class)
-    public ResponseEntity<Object> handleServletException(ServletException ex, WebRequest request) {
+    @ExceptionHandler(org.hibernate.exception.ConstraintViolationException.class)
+    public ResponseEntity<Object> handleConstraintViolationException(org.hibernate.exception.ConstraintViolationException ex, WebRequest request) {
         ErrorDetails error = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
@@ -116,12 +109,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleInvalidDataAccessApiUsageException(InvalidDataAccessApiUsageException ex, WebRequest request) {
         ErrorDetails error = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-    }
-
-    @ExceptionHandler(SecurityException.class)
-    public ResponseEntity<Object> handleSecurityException(SecurityException ex, WebRequest request) {
-        ErrorDetails error = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
@@ -136,9 +123,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
-        ErrorDetails error = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
-    }
+//    @ExceptionHandler(DataIntegrityViolationException.class)
+//    public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
+//        ErrorDetails error = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+//        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+//    }
 }

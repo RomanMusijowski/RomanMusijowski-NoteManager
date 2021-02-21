@@ -43,7 +43,7 @@ public class NoteController {
     @ResponseStatus(HttpStatus.OK)
     public NoteDTO updateNote(@PathVariable("id") @Min(value = 1, message = "id must be greater than or equal to 1") Long id,
                               @RequestBody @Valid NotePayload payload) {
-        Note update = noteService.update(id, payload.getContent());
+        Note update = noteService.update(id, payload.getTitle(), payload.getContent());
         return mapper.map(update, NoteDTO.class);
     }
 
@@ -51,7 +51,7 @@ public class NoteController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createTask(@RequestBody @Valid NotePayload payload) {
-        noteService.create(payload.getContent());
+        noteService.create(payload.getTitle(), payload.getContent());
     }
 
     @DeleteMapping("/{id}")

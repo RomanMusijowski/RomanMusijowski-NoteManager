@@ -20,6 +20,9 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "TITLE", nullable = false, unique = true)
+    private String title;
+
     @Column(name = "CONTENT", nullable = false)
     private String content;
 

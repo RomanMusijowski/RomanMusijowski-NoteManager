@@ -32,8 +32,9 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public void create(String content) {
+    public void create(String title, String content) {
         Note note = Note.builder()
+                .title(title)
                 .content(content)
                 .created(DateUtils.getCurrentDate())
                 .version(NEW_NOTE_VERSION)
@@ -42,24 +43,24 @@ public class NoteServiceImpl implements NoteService {
         noteRepo.save(note);
     }
 
-    //already existed record save as snapshot with modif date and version
-    //change content,  version, updated date and snapshot
     @Override
-    public Note update(Long id, String content) {
+    public Note update(Long id, String title, String content) {
         Note note = findById(id);
         note.getSnapshots().add(NoteSnapshot.builder()
                 .note(note)
+                .title(title)
                 .content(note.getContent())
                 .modified(DateUtils.getCurrentDate())
                 .version(note.getVersion())
                 .build()
         );
 
+        note.setTitle(title);
         note.setContent(content);
         note.setVersion(note.getVersion() + NEW_NOTE_VERSION);
         note.setModified(DateUtils.getCurrentDate());
 
-            return noteRepo.save(note);
+        return noteRepo.save(note);
     }
 
     @Override

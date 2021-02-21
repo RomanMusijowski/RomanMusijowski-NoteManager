@@ -9,6 +9,8 @@ public class NoteDTO {
 
     private Long id;
 
+    private String title;
+
     private String content;
 
     private Long version;
