@@ -12,7 +12,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +39,7 @@ public class NoteController {
     }
 
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public NoteDTO updateNote(@PathVariable("id") @Min(value = 1, message = "id must be greater than or equal to 1") Long id,
                               @RequestBody @Valid NotePayload payload) {
         Note update = noteService.update(id, payload.getTitle(), payload.getContent());
@@ -50,11 +49,12 @@ public class NoteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createTask(@RequestBody @Valid NotePayload payload) {
+    public void createNote(@RequestBody @Valid NotePayload payload) {
         noteService.create(payload.getTitle(), payload.getContent());
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteNote(@PathVariable("id") @Min(value = 1, message = "id must be greater than or equal to 1") Long id) {
         noteService.deleteById(id);
     }
