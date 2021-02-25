@@ -9,7 +9,7 @@ POST http://localhost:8080/api/note
 Content-Type: application/json
 
 {
-  "title": "just note title22",
+  "title": "just note title",
   "content": "just note content"
 }
 
