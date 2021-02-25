@@ -38,6 +38,6 @@ public class Note {
     @Column(name = "CREATED_DATE_TIME", nullable = false)
     private LocalDateTime created;
 
-    @Column(name = "MODIFIED_DATE_TIME", nullable = false)
+    @Column(name = "MODIFIED_DATE_TIME")
     private LocalDateTime modified;
 }
