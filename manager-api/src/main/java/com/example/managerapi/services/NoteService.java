@@ -1,12 +1,12 @@
 package com.example.managerapi.services;
 
 import com.example.managerapi.domain.Note;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface NoteService {
 
-    List<Note> findAll();
+    Page<Note> findAll(Pageable pageable);
 
     Note findById(Long id);
 

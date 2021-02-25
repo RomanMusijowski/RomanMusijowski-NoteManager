@@ -7,14 +7,14 @@ import com.example.managerapi.payload.NotePayload;
 import com.example.managerapi.services.NoteService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
@@ -26,11 +26,9 @@ public class NoteController {
     private final ModelMapper mapper;
 
     @GetMapping
-    public List<NoteDTO> getAllNotes() {
-        return noteService.findAll()
-                .stream()
-                .map(note -> mapper.map(note, NoteDTO.class))
-                .collect(Collectors.toList());
+    public Page<NoteDTO> getAllNotes(Pageable pageable) {
+        return noteService.findAll(pageable)
+                .map(note -> mapper.map(note, NoteDTO.class));
     }
 
     @GetMapping("/{id}")
