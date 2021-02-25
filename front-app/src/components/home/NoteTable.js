@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import MaterialTable from "material-table";
 import {fetchListOfTasks} from "../../services/services/noteService";
+import UpdateIcon from '@material-ui/icons/Update';
 import Moment from "react-moment";
 import NotePopup from "./NotePopup";
 
@@ -12,9 +13,8 @@ const NoteTable = () => {
     const notes = useSelector((state) => state.note.notes);
 
     useEffect(async () => {
-        let timer1 = setTimeout(() => dispatch(fetchListOfTasks()), 10000)
-        return () => {
-            clearTimeout(timer1)
+        if (notes === undefined || notes.size === 0) {
+            dispatch(fetchListOfTasks())
         }
     })
 
@@ -59,6 +59,10 @@ const NoteTable = () => {
         data: notes
     })
 
+    const updateList = () => {
+        dispatch(fetchListOfTasks())
+    }
+
     return(
         <div>
             {notes !== undefined ? (
@@ -66,6 +70,13 @@ const NoteTable = () => {
                     columns={state.columns}
                     data={notes}
                     title="Notes list"
+                    actions={[
+                        {
+                            icon: () =>
+                                <UpdateIcon onClick={updateList}/>,
+                            isFreeAction: true,
+                        },
+                    ]}
                 />
             ) : (
                 <p>Please wait a little bit longer.</p>
