@@ -1,0 +1,82 @@
+version: '3'
+services:
+  postgres-db-server:
+    container_name: note_manager_system_db
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=notes_db
+    ports:
+      - 5432:5432
+    volumes:
+      - note-manager:/var/lib/postgres-db-server
+    networks:
+      - note-manager-network
+
+
+  manager-api-server:
+    build: ./manager-api
+    container_name: note_manager_manager_api
+    image: roman-musijowski-manager-api
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db-server:5432/notes_db
+    depends_on:
+      - postgres-db-server
+    links:
+      - postgres-db-server
+    networks:
+      - note-manager-network
+    ports:
+      - 8080:8080
+    restart: on-failure
+    logging:
+      driver: json-file
+
+  developer-api-server:
+    build: ./developer-api
+    container_name: note_manager_developer_api
+    image: roman-musijowski-developer-api
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db-server:5432/notes_db
+    depends_on:
+      - postgres-db-server
+    links:
+      - postgres-db-server
+    networks:
+      - note-manager-network
+    ports:
+      - 8888:8888
+    restart: on-failure
+    logging:
+      driver: json-file
+
+
+  front-app:
+    build: ./front-app
+    container_name: note_manager_front
+    image: roman-musijowski-front-app
+    volumes:
+      - note-manager:/var/lib/front-app
+    depends_on:
+      - manager-api-server
+      - developer-api-server
+    links:
+      - manager-api-server
+      - developer-api-server
+    ports:
+      - 3000:3000
+    networks:
+      - note-manager-network
+    stdin_open: true
+
+
+networks:
+  note-manager-network:
+    driver: bridge
+
+volumes:
+  note-manager:
+    external: false
+
+
